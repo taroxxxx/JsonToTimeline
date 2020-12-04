@@ -1,7 +1,11 @@
 ﻿# -*- coding: utf-8 -*-
 
 """
-.. note::
+json から timeline html を作成
+
+.py < .json
+cd /d "/JsonToTimeline"
+"/python.exe" "main.py" "/test.json"
 """
 
 import os
@@ -27,7 +31,7 @@ def write_html( json_file_path ):
     s@json_file_path:
 
     returns:
-    html_file_path:
+    s@html_file_path:
     """
 
     all_timeline_row_list = []
@@ -89,7 +93,7 @@ def write_html( json_file_path ):
         )
 
     # write html
-    cur_dir_path = os.path.abspath( r'.' )
+    cur_dir_path = os.path.dirname( __file__ )
     basename = os.path.basename( json_file_path )
     basename, ext = os.path.splitext( basename )
 
@@ -116,24 +120,14 @@ def write_html( json_file_path ):
     return html_file_path
 
 
-def main():
-
-    """
-    実行
-    """
-
-    # get .csv
-    cur_dir_path =  os.path.abspath( r'.' )
-    json_file_path_list = glob.glob( os.path.join( cur_dir_path, r'*.json' ) )
-
-    for json_file_path in json_file_path_list:
-
-        write_html( json_file_path )
-
 if __name__ == '__main__':
 
     try:
-        main()
+        if 2 <= len( sys.argv ):
+            write_html( sys.argv[1] )
+        else:
+            logging.error( 'input .json file' )
+            raw_input( '--- end ---' )
     except:
         logging.error( traceback.format_exc() )
         raw_input( '--- end ---' )
