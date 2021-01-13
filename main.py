@@ -93,7 +93,7 @@ def write_html( json_file_path ):
         )
 
     # write html
-    cur_dir_path = os.path.dirname( __file__ )
+    cur_dir_path = os.path.dirname( json_file_path )
     basename = os.path.basename( json_file_path )
     basename, ext = os.path.splitext( basename )
 
