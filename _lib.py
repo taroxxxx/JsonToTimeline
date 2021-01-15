@@ -48,9 +48,9 @@ def src_time_to_str( src_time, tmp=u'{month}/{day}({weekday_utf})' ):
         'day' : d.day,
         'weekday' : ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][d.weekday()],
         'weekday_utf' : [u'月',u'火',u'水',u'木',u'金',u'土',u'日'][d.weekday()],
-        'hour' : d.hour,
-        'min' : d.minute,
-        'sec' : d.second,
+        'hour' : '{0:02d}'.format( d.hour ),
+        'min' : '{0:02d}'.format( d.minute ),
+        'sec' : '{0:02d}'.format( d.second ),
         'microsec' : d.microsecond,
 
     }
@@ -159,6 +159,14 @@ def get_html_chart_body_line_tmp():
 
 def date_str_to_datetime( date_str ):
 
+    """
+
+    """
+
+    y = 2000
+    m = 1
+    d = 1
+
     date_str_fmt = re.compile( r'(?P<y>[\d]+)-(?P<m>[\d]+)-(?P<d>[\d]+)' )
     date_str_search = date_str_fmt.search( date_str )
 
@@ -168,7 +176,33 @@ def date_str_to_datetime( date_str ):
         m = int( date_str_search.group( 'm' ) )
         d = int( date_str_search.group( 'd' ) )
 
-        return datetime.datetime( y,m,d )
+    h = 0
+    min = 0
+
+    date_str_fmt = re.compile( r'(?P<h>[\d]+):(?P<min>[\d]+)' )
+    date_str_search = date_str_fmt.search( date_str )
+
+    if date_str_search != None:
+
+        h = int( date_str_search.group( 'h' ) )
+        min = int( date_str_search.group( 'min' ) )
+
+    return datetime.datetime( y,m,d, h,min )
+
+
+def date_str_to_time( date_str, type='ymd' ):
+
+    start_d = lib.date_str_to_datetime( timeline_item_dict[ 's' ] )
+
+    if start_d != None:
+        start_d = datetime.datetime( start_d.year,start_d.month,start_d.day,0,0,0 ) # 0:00
+    else:
+        start_d = lib.date_str_to_datetime( timeline_item_dict[ 's' ], type='hm' )
+        if start_d != None:
+            start_d = datetime.datetime(
+                start_d.year,start_d.month,start_d.day, start_d.hour,start_d.minute,0
+            )
+    start_time = lib.datetime_to_time( start_d )
 
     return None
 
