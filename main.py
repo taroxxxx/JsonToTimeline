@@ -221,7 +221,7 @@ if __name__ == '__main__':
 
     try:
         if 2 <= len( sys.argv ):
-            if 2 <= len( sys.argv ):
+            if 3 <= len( sys.argv ):
                 write_html( sys.argv[1], mode=sys.argv[2] )
             else:
                 write_html( sys.argv[1] )
